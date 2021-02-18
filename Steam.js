@@ -22,7 +22,7 @@ function Start() {
     names.forEach(function(name) {
         console.log(name);
         let id = GetSteamUserID(name);
-        console.log(id);
+        console.log(id + 'test');
         let listOfGames = GetUserGames(id)
         arrayOfGames.push(listOfGames);
     })
