@@ -10,7 +10,7 @@ app.get('/', (req, res) => {
 
 });
 
-function Start() {
+async function Start() {
     let names = ['KhaleesiTOM', 'sproedebamser'];
     let arrayOfGames = [];
     console.log(names);
@@ -21,18 +21,28 @@ function Start() {
 
     names.forEach(function(name) {
         console.log(name);
-        let id = GetSteamUserID(name);
+        let id = steamID(name);
+        id.then(function(result) {
+            console.log(result);
+        })
         console.log(id + 'test');
         let listOfGames = GetUserGames(id)
         arrayOfGames.push(listOfGames);
     })
 }
 
+let steamID = function(name) {
+    return steam.resolve(`https://steamcommunity.com/id/${username}/`).then(id => {
+        return id;
+    })
+}
 
 
-function GetSteamUserID(username) {
+async function GetSteamUserID(username) {
     steam.resolve(`https://steamcommunity.com/id/${username}/`).then(id => {
         return id;
+    }).catch(err => {
+        console.log('error', err);
     })
 }
 
@@ -42,7 +52,9 @@ function GetUserGames(id) {
     })
 }
 
-Start();
+(async() => {
+    await Start();
+})();
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}!`)
